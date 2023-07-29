@@ -21,34 +21,37 @@ def start(message):
     # Ширина ряда добавления кнопок.
     markup = types.InlineKeyboardMarkup(row_width=3)
     # Новорожденные с ДН без факторов.
-    newborn_respiratory_no_risk = types.InlineKeyboardButton(button_newborn_respiratory_no_risk, callback_data='data')
+    newborn_respiratory_no_risk = types.InlineKeyboardButton(button_newborn_respiratory_no_risk, callback_data='data1')
     # НР без КС, но с условными ФР.
-    newborn_no_clinic_conditional = types.InlineKeyboardButton(button_newborn_no_clinic_conditional, callback_data='data')
+    newborn_no_clinic_conditional = types.InlineKeyboardButton(button_newborn_no_clinic_conditional, callback_data='data2')
     # НР без КС, но с абсолютными ФР.
-    newborn_no_clinic_absolute = types.InlineKeyboardButton(button_newborn_no_clinic_absolute, callback_data='data')
+    newborn_no_clinic_absolute = types.InlineKeyboardButton(button_newborn_no_clinic_absolute, callback_data='data3')
     # Перезапуск.---- не готов!
-    restart = types.InlineKeyboardButton(button_restart_text, callback_data='data')
+    restart = types.InlineKeyboardButton(button_restart_text, callback_data='data4')
     # Добавление кнопок в ряд шириной 3.
     markup.add(newborn_respiratory_no_risk, newborn_no_clinic_conditional,
                newborn_no_clinic_absolute)
     # Добавление отдельной кнопки перезапуска.
     markup.row(restart)
     # Сообщение о факторах риска.
-    bot.send_message(message.chat.id, risc_factors, parse_mode='HTML')
+    bot.send_message(message.chat.id, text_risc_factors, parse_mode='HTML')
+    # Сообщение об условных/абсолютных факторах риска.
+    bot.send_message(message.chat.id, text_cond_abs_risc_factor, parse_mode='HTML')
     # Сообщение о выборе варианта.
-    bot.send_message(message.chat.id, variant_choose_comment, parse_mode='HTML', reply_markup=markup)
+    bot.send_message(message.chat.id, text_variant_choose, parse_mode='HTML', reply_markup=markup)
 
 
 # def on_click(message):
 #     if message.text == button_newborn_respiratory_no_risk:
 #         bot.send_message(callback.message.chat.id, 'Na')
 
-# @bot.callback_query_handler(func=lambda callback: True)
-# def callback_message(callback):
-#     if callback.data == button_newborn_respiratory_no_risk:
-#         markup = types.InlineKeyboardMarkup(row_width=2)
-#         more_than_two_risk_factors_rds = types.KeyboardButton(button_more_than_two_risc_factors_rds)
-#         markup.add(more_than_two_risk_factors_rds)
+@bot.callback_query_handler(func=lambda callback: True)
+def callback_message(callback):
+    if callback.data == 'data1':
+        markup = types.InlineKeyboardMarkup(row_width=2)
+        more_than_two_risk_factors_rds = types.InlineKeyboardButton(button_more_than_two_risc_factors_rds)
+        markup.add(more_than_two_risk_factors_rds)
+        bot.send_message(callback.message.chat.id, 'Whats next')
         # less_than_two_risk_factors_rds = types.KeyboardButton(button_less_than_two_risc_factors_rds)
         # markup.add(more_than_two_risk_factors_rds, less_than_two_risk_factors_rds)
         # restart = types.KeyboardButton(button_restart_text)
