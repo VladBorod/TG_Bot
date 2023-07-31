@@ -1,9 +1,10 @@
 import telebot
 from telebot import types
 
+import choose_func
 from text_for_user import *
 from bot_token import bot_token
-from choose_funcs import *
+from choose_func import *
 
 bot = telebot.TeleBot(bot_token)
 
@@ -44,15 +45,19 @@ def start(message):
 
 @bot.callback_query_handler(func=lambda callback: callback.data)
 def first_fork(callback):
+    # ДН без факторов риска и дальнейшая вилка.
     if callback.data == 'fork_f_t_risk_f_rds':
         markup_rds = types.InlineKeyboardMarkup(row_width=1)
-        more_than_two_risk_factors_rds = types.InlineKeyboardButton(text_button_more_than_two_risc_factors_rds,
-                                                                    callback_data='fork_f_more_t_r_f_rds')
         less_than_two_risk_factors_rds = types.InlineKeyboardButton(text_button_less_than_two_risc_factors_rds,
                                                                     callback_data='fork_f_less_t_r_f_rds')
-        markup_rds.add(more_than_two_risk_factors_rds, less_than_two_risk_factors_rds)
+        more_than_two_risk_factors_rds = types.InlineKeyboardButton(text_button_more_than_two_risc_factors_rds,
+                                                                    callback_data='fork_f_more_t_r_f_rds')
+        markup_rds.add(less_than_two_risk_factors_rds, more_than_two_risk_factors_rds)
+        bot.send_message(callback.message.chat.id, text_for_newborn_with_rds_first_day,
+                         parse_mode='HTML')
         bot.send_message(callback.message.chat.id, text_fork_for_more_and_less_than_two_risk_factors,
                          parse_mode='HTML', reply_markup=markup_rds)
+    # Условные факторы риска и дальнейшая вилка.
     elif callback.data == 'fork_f_conditional':
         markup_conditional = types.InlineKeyboardMarkup(row_width=1)
         gestational_age_more_35 = types.InlineKeyboardButton(text_button_more_35_w_g_a,
@@ -62,18 +67,51 @@ def first_fork(callback):
         markup_conditional.add(gestational_age_more_35, gestational_age_less_35)
         bot.send_message(callback.message.chat.id, text_for_gestational_age_choose,
                          parse_mode='HTML', reply_markup=markup_conditional)
+    # Абсолютные факторы риска и дальнейшая вилка.
     elif callback.data == 'fork_f_absolute':
         markup_absolute = types.InlineKeyboardMarkup(row_width=1)
-        more_than_two_risk_factors_absolute = types.InlineKeyboardButton(
-            text_button_more_than_two_risc_factors_absolute,
-            callback_data='fork_f_more_t_2_risc_f_absolute')
         less_than_two_risk_factors_absolute = types.InlineKeyboardButton(
             text_button_less_than_two_risc_factors_absolute,
             callback_data='fork_f_less_t_2_risc_f_absolute')
-        markup_absolute.add(more_than_two_risk_factors_absolute, less_than_two_risk_factors_absolute)
+        more_than_two_risk_factors_absolute = types.InlineKeyboardButton(
+            text_button_more_than_two_risc_factors_absolute,
+            callback_data='fork_f_more_t_2_risc_f_absolute')
+        markup_absolute.add(less_than_two_risk_factors_absolute, more_than_two_risk_factors_absolute)
+        bot.send_message(callback.message.chat.id, text_for_cbt_supervision_and_next_fork,
+                         parse_mode='HTML')
         bot.send_message(callback.message.chat.id, text_fork_for_more_and_less_than_two_risk_factors,
                          parse_mode='HTML', reply_markup=markup_absolute)
-
+    # Первый СТОП исходя из оценки гестационного возраста (более 35 недель или
+    # отсутствия лабораторных показателей) и отсутствия симптомов.
+    elif callback.data == 'fork_f_more_t_35_w_g_a':
+        bot.send_message(callback.message.chat.id, text_for_cbt_supervision,
+                         parse_mode='HTML')
+    elif callback.data == 'fork_f_less_t_2_risc_f_absolute':
+        bot.send_message(callback.message.chat.id, text_for_cbt_supervision,
+                         parse_mode='HTML')
+    # Вилка на переход из 35 н.г.в. или переход из абсолютных факторов риска???
+    elif callback.data == 'fork_f_less_t_35_w_g_a':
+        markup_conditional_less_35_w_g_a = types.InlineKeyboardMarkup(row_width=1)
+        less_t_two_risc_factors_less_35_w_g_a = types.InlineKeyboardButton(text_less_t_two_risc_factors_less_35_w_g_a,
+                                                                    callback_data='fork_f_more_t_35_w_g_a')
+        more_t_two_risc_factors_less_35_w_g_a = types.InlineKeyboardButton(text_more_t_two_risc_factors_less_35_w_g_a,
+                                                                    callback_data='temp')
+        markup_conditional_less_35_w_g_a.add(less_t_two_risc_factors_less_35_w_g_a,
+                                             more_t_two_risc_factors_less_35_w_g_a)
+        bot.send_message(callback.message.chat.id, text_for_cbt_supervision_and_next_fork,
+                         parse_mode='HTML', reply_markup=markup_conditional_less_35_w_g_a)
+    # Переход к назначению антибактериальной монотерапии!
+    elif callback.data == 'fork_f_less_t_r_f_rds':
+        markup_less_than_two_r_f_rds = types.InlineKeyboardMarkup(row_width=1)
+        go_to_prescribe_monotherapy = types.InlineKeyboardButton(text_button_to_prescribe_monotherapy,
+                                                                 callback_data='prescribe_mono_therapy')
+        markup_less_than_two_r_f_rds.add(go_to_prescribe_monotherapy)
+        bot.send_message(callback.message.chat.id, text_for_prescribing_an_antibiotic,
+                         parse_mode='HTML', reply_markup=markup_less_than_two_r_f_rds)
+    # Переход к методу для назначения монотерапии Сультасином!
+    elif callback.data == 'prescribe_mono_therapy':
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+        bot.register_next_step_handler(callback.message, choose_func.sultasini_calculation())
 
 
 # Постоянная работа бота.
