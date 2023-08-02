@@ -10,13 +10,13 @@ bot = telebot.TeleBot(bot_token)
 
 # Стартовое меню.
 # Пользователь может ввести любой текст или нажать старт.
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['antibiotics'])
 def start(message):
     """"Это стартовый метод!"""
     # Приветствие с пользователем.
-    bot.send_message(message.chat.id, f'<b>Привет, '
+    bot.send_message(message.chat.id, f'<b>Здравствуйте, '
                                       f'{message.from_user.first_name} {message.from_user.last_name}, '
-                                      f'давай рассчитаем антибиотики, </b>',
+                                      f'давайте рассчитаем антибиотики! </b>',
                      parse_mode='html')
     # Ширина ряда добавления кнопок.
     markup = types.InlineKeyboardMarkup(row_width=2)
@@ -29,11 +29,18 @@ def start(message):
     # НР без КС, но с абсолютными ФР.
     newborn_no_clinic_absolute = types.InlineKeyboardButton(text_button_newborn_no_clinic_absolute,
                                                             callback_data='fork_f_absolute')
+    # Смена антибактериальной терапии.
+    newborn_antibiotics_change = types.InlineKeyboardButton(text_button_newborn_antibchange,
+                                                            callback_data='antibiotics_change')
+    # Ранний сепсис.
+    newborn_sepsis = types.InlineKeyboardButton(text_button_newborn_sepsis, callback_data='sepsis')
     # Добавление верхней кнопки.
     markup.row(newborn_respiratory_no_risk)
     # Добавление двух нижних кнопок.
     markup.add(newborn_no_clinic_conditional,
                newborn_no_clinic_absolute)
+    markup.row(newborn_antibiotics_change)
+    markup.row(newborn_sepsis)
     # Сообщение о факторах риска.
     bot.send_message(message.chat.id, text_risc_factors, parse_mode='HTML')
     # Сообщение об условных/абсолютных факторах риска.
@@ -98,13 +105,13 @@ def first_fork(callback):
         # Сообщение о назначении КАК и клиническом наблюдении.
         bot.send_message(callback.message.chat.id, text_for_cbt_supervision,
                          parse_mode='HTML')
-    # Вилка на переход из 35 нед. г.в. или переход из абсолютных факторов риска???
+    # Вилка на переход из 35 нед. г.в. или переход из абсолютных факторов риска.
     elif callback.data == 'fork_f_less_t_35_w_g_a':
         markup_conditional_less_35_w_g_a = types.InlineKeyboardMarkup(row_width=1)
         less_t_two_risc_factors_less_35_w_g_a = types.InlineKeyboardButton(text_less_t_two_risc_factors_less_35_w_g_a,
                                                                     callback_data='fork_f_more_t_35_w_g_a')
         more_t_two_risc_factors_less_35_w_g_a = types.InlineKeyboardButton(text_more_t_two_risc_factors_less_35_w_g_a,
-                                                                    callback_data='temp')
+                                                                    callback_data='more_than_2_r_f_less_35_w')
         markup_conditional_less_35_w_g_a.add(less_t_two_risc_factors_less_35_w_g_a,
                                              more_t_two_risc_factors_less_35_w_g_a)
         bot.send_message(callback.message.chat.id, text_for_cbt_supervision_and_next_fork,
@@ -130,6 +137,20 @@ def first_fork(callback):
         bot.register_next_step_handler(callback.message, ampicillini_calculation)
     # Переход к стартовой АБ терапии двумя антибиотиками.
     elif callback.data == 'fork_f_more_2_r_f_rds':
+        markup_more_than_two_r_f_rds = types.InlineKeyboardMarkup(row_width=1)
+        go_to_prescribe_amikacini = types.InlineKeyboardButton(text_button_to_prescribe_amikacini,
+                                                               callback_data='prescribe_amikacini')
+        markup_more_than_two_r_f_rds.add(go_to_prescribe_amikacini)
+        bot.send_message(callback.message.chat.id, text_for_prescribing_an_antibiotic_duo, parse_mode='HTML',
+                         reply_markup=markup_more_than_two_r_f_rds)
+    elif callback.data == 'more_than_2_r_f_less_35_w':
+        markup_more_than_two_r_f_rds = types.InlineKeyboardMarkup(row_width=1)
+        go_to_prescribe_amikacini = types.InlineKeyboardButton(text_button_to_prescribe_amikacini,
+                                                               callback_data='prescribe_amikacini')
+        markup_more_than_two_r_f_rds.add(go_to_prescribe_amikacini)
+        bot.send_message(callback.message.chat.id, text_for_prescribing_an_antibiotic_duo, parse_mode='HTML',
+                         reply_markup=markup_more_than_two_r_f_rds)
+    elif callback.data == 'fork_f_more_t_2_risc_f_absolute':
         markup_more_than_two_r_f_rds = types.InlineKeyboardMarkup(row_width=1)
         go_to_prescribe_amikacini = types.InlineKeyboardButton(text_button_to_prescribe_amikacini,
                                                                callback_data='prescribe_amikacini')
