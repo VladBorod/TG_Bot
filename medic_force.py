@@ -1,10 +1,9 @@
 import telebot
 from telebot import types
 
-import choose_func
 from text_for_user import *
 from bot_token import bot_token
-from choose_func import *
+from choose_func import sultasini_calculation
 
 bot = telebot.TeleBot(bot_token)
 
@@ -111,7 +110,7 @@ def first_fork(callback):
     # Переход к методу для назначения монотерапии Сультасином!
     elif callback.data == 'prescribe_mono_therapy':
         bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
-        bot.register_next_step_handler(callback.message, choose_func.sultasini_calculation())
+        bot.register_next_step_handler(callback.message, sultasini_calculation)
 
 
 # Постоянная работа бота.
