@@ -145,8 +145,8 @@ def fluconazoli_calculation_40(message):
         elif body_weight > 0.0:
             result_load = body_weight * 12
             result_support = body_weight * 6
-            bot.send_message(message.chat.id, f'<b>Нагрузочная:</b> <b><u>{round(result_load, 2)}</u></b>'
-                                              f'<b>, поддерживающая:</b> <b><u>{round(result_support, 2)}</u></b>',
+            bot.send_message(message.chat.id, f'<b>Нагрузочная:</b> <b><u>{round(result_load, 2)} мг</u></b>'
+                                              f'<b>, поддерживающая:</b> <b><u>{round(result_support, 2)} мг.</u></b>',
                              parse_mode='HTML')
             return
     except ValueError:
@@ -202,6 +202,116 @@ def vancomycini_calculation_20(message):
         elif body_weight > 0.0:
             result = body_weight * 20
             bot.send_message(message.chat.id, f'<b><u>{round(result, 2)} мг</u></b>', parse_mode='HTML')
+            return
+    except ValueError:
+        bot.send_message(message.chat.id, text_for_value_error, parse_mode='HTML')
+        bot.register_next_step_handler(message, body_weight)
+        return
+
+
+def vancomycini_calculation_creat_less_62(message):
+    """Функция расчета Ванкомицина по креатинину менее 62 мкмоль/л"""
+    body_weight = 0.0
+    try:
+        body_weight = float(message.text.strip())
+        if body_weight <= 0.0:
+            bot.send_message(message.chat.id, text_for_body_weight_above_zero, parse_mode='HTML')
+            return
+        elif body_weight > 0.0:
+            result_load = body_weight * 20
+            result_support = body_weight * 15
+            bot.send_message(message.chat.id, f'<b>Нагрузочная:</b> <b><u>{round(result_load, 2)} мг</u></b>'
+                                              f'<b>, поддерживающая:</b> <b><u>{round(result_support, 2)} мг</u></b>'
+                                              f'<b> каждые 12 часов</b>',
+                             parse_mode='HTML')
+            return
+    except ValueError:
+        bot.send_message(message.chat.id, text_for_value_error, parse_mode='HTML')
+        bot.register_next_step_handler(message, body_weight)
+        return
+
+
+def vancomycini_calculation_creat_62_80(message):
+    """Функция расчета Ванкомицина по креатинину 62-80 мкмоль/л"""
+    body_weight = 0.0
+    try:
+        body_weight = float(message.text.strip())
+        if body_weight <= 0.0:
+            bot.send_message(message.chat.id, text_for_body_weight_above_zero, parse_mode='HTML')
+            return
+        elif body_weight > 0.0:
+            result_load = body_weight * 20
+            result_support = body_weight * 20
+            bot.send_message(message.chat.id, f'<b>Нагрузочная:</b> <b><u>{round(result_load, 2)} мг</u></b>'
+                                              f'<b>, поддерживающая:</b> <b><u>{round(result_support, 2)} мг</u></b>'
+                                              f'<b> каждые 24 часа</b>',
+                             parse_mode='HTML')
+            return
+    except ValueError:
+        bot.send_message(message.chat.id, text_for_value_error, parse_mode='HTML')
+        bot.register_next_step_handler(message, body_weight)
+        return
+
+
+def vancomycini_calculation_creat_89_106(message):
+    """Функция расчета Ванкомицина по креатинину 89-106 мкмоль/л"""
+    body_weight = 0.0
+    try:
+        body_weight = float(message.text.strip())
+        if body_weight <= 0.0:
+            bot.send_message(message.chat.id, text_for_body_weight_above_zero, parse_mode='HTML')
+            return
+        elif body_weight > 0.0:
+            result_load = body_weight * 20
+            result_support = body_weight * 15
+            bot.send_message(message.chat.id, f'<b>Нагрузочная:</b> <b><u>{round(result_load, 2)} мг</u></b>'
+                                              f'<b>, поддерживающая:</b> <b><u>{round(result_support, 2)} мг</u></b>'
+                                              f'<b> каждые 24 часа</b>',
+                             parse_mode='HTML')
+            return
+    except ValueError:
+        bot.send_message(message.chat.id, text_for_value_error, parse_mode='HTML')
+        bot.register_next_step_handler(message, body_weight)
+        return
+
+
+def vancomycini_calculation_creat_115_124(message):
+    """Функция расчета Ванкомицина по креатинину 115-124 мкмоль/л"""
+    body_weight = 0.0
+    try:
+        body_weight = float(message.text.strip())
+        if body_weight <= 0.0:
+            bot.send_message(message.chat.id, text_for_body_weight_above_zero, parse_mode='HTML')
+            return
+        elif body_weight > 0.0:
+            result_load = body_weight * 20
+            result_support = body_weight * 10
+            bot.send_message(message.chat.id, f'<b>Нагрузочная:</b> <b><u>{round(result_load, 2)} мг</u></b>'
+                                              f'<b>, поддерживающая:</b> <b><u>{round(result_support, 2)} мг</u></b>'
+                                              f'<b> каждые 24 часа</b>',
+                             parse_mode='HTML')
+            return
+    except ValueError:
+        bot.send_message(message.chat.id, text_for_value_error, parse_mode='HTML')
+        bot.register_next_step_handler(message, body_weight)
+        return
+
+
+def vancomycini_calculation_creat_142_more(message):
+    """Функция расчета Ванкомицина по креатинину 115-124 мкмоль/л"""
+    body_weight = 0.0
+    try:
+        body_weight = float(message.text.strip())
+        if body_weight <= 0.0:
+            bot.send_message(message.chat.id, text_for_body_weight_above_zero, parse_mode='HTML')
+            return
+        elif body_weight > 0.0:
+            result_load = body_weight * 20
+            result_support = body_weight * 15
+            bot.send_message(message.chat.id, f'<b>Нагрузочная:</b> <b><u>{round(result_load, 2)} мг</u></b>'
+                                              f'<b>, поддерживающая:</b> <b><u>{round(result_support, 2)} мг</u></b>'
+                                              f'<b> каждые 48 часов</b>',
+                             parse_mode='HTML')
             return
     except ValueError:
         bot.send_message(message.chat.id, text_for_value_error, parse_mode='HTML')

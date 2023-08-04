@@ -13,7 +13,7 @@ bot = telebot.TeleBot(bot_token)
 def start(message):
     if message.from_user.last_name is not None:
         bot.send_message(message.chat.id, f'<b>Приветствую {message.from_user.first_name} '
-                                          f'{message.from_user.last_name}. Я молодой и начинающий свой путь робот,'
+                                          f'{message.from_user.last_name}. Я молодой и начинающий свой путь робот, '
                                           f'созданный для помощи и подсказок куда более разумной особи чем я. </b>'
                                           f'<b><u>А потому прошу тебя быть внимательным в своем выборе! </u></b>'
                                           f'<b>Начните с нажатия кнопки Menu в левом нижнем углу.</b>',
@@ -280,23 +280,30 @@ def antibiotics_algorithm(callback):
                                      mening_bacterial)
         bot.send_message(callback.message.chat.id, text_to_choose_ilness_abt_change,
                          parse_mode='HTML', reply_markup=markup_ilness_conditions)
+    # Менингеальная или диссеминированная инфекция.
     elif callback.data == 'mening_dessim_infect':
         markup_mening_dessim_infect = types.InlineKeyboardMarkup(row_width=1)
         from_32_gw_0_7 = types.InlineKeyboardButton(text_from_32_gw_0_7, callback_data='20_8_meron')
         from_32_gw_7_30 = types.InlineKeyboardButton(text_from_32_gw_7_30, callback_data='30_8_meron')
         add_fluconazoli = types.InlineKeyboardButton(text_add_fluconazoli, callback_data='add_fluconaz')
-        markup_mening_dessim_infect.add(from_32_gw_0_7, from_32_gw_7_30, add_fluconazoli)
+        add_vancomycini = types.InlineKeyboardButton(text_bt_add_vancomycini,
+                                                     callback_data='add_vancomycini')
+        markup_mening_dessim_infect.add(from_32_gw_0_7, from_32_gw_7_30, add_fluconazoli, add_vancomycini)
         bot.send_message(callback.message.chat.id, text_to_choose_gw_in_mero, parse_mode='HTML',
                          reply_markup=markup_mening_dessim_infect)
+    # НЕ МЕНИНГЕАЛЬНАЯ инфекция.
     elif callback.data == 'mening_r_o':
         markup_mening_r_o = types.InlineKeyboardMarkup(row_width=1)
         from_32_to_34_0_7 = types.InlineKeyboardButton(text_from_32_to_34_0_7, callback_data='13_8_meron')
         from_32_to_34_7_30 = types.InlineKeyboardButton(text_from_32_to_34_7_30, callback_data='20_8_meron')
         from_34_0_30 = types.InlineKeyboardButton(text_from_34_0_30, callback_data='20_8_meron')
         add_fluconazoli = types.InlineKeyboardButton(text_add_fluconazoli, callback_data='add_fluconaz')
-        markup_mening_r_o.add(from_32_to_34_0_7, from_32_to_34_7_30, from_34_0_30, add_fluconazoli)
+        add_vancomycini = types.InlineKeyboardButton(text_bt_add_vancomycini,
+                                                     callback_data='add_vancomycini')
+        markup_mening_r_o.add(from_32_to_34_0_7, from_32_to_34_7_30, from_34_0_30, add_fluconazoli, add_vancomycini)
         bot.send_message(callback.message.chat.id, text_to_choose_gw_in_mero, parse_mode='HTML',
                          reply_markup=markup_mening_r_o)
+    # НЕ ЦНС абдоминальная инфекция.
     elif callback.data == 'intraabd_non_cns':
         intraabdom_non_cns = types.InlineKeyboardMarkup(row_width=1)
         less_32_pca_less_14 = types.InlineKeyboardButton(text_less_32_pca_less_14, callback_data='20_12_meron')
@@ -304,19 +311,26 @@ def antibiotics_algorithm(callback):
         more_32_pca_less_14 = types.InlineKeyboardButton(text_more_32_pca_less_14, callback_data='20_8_meron')
         more_32_pca_more_14 = types.InlineKeyboardButton(text_more_32_pca_more_14, callback_data='30_8_meron')
         add_fluconazoli = types.InlineKeyboardButton(text_add_fluconazoli, callback_data='add_fluconaz')
+        add_vancomycini = types.InlineKeyboardButton(text_bt_add_vancomycini,
+                                                     callback_data='add_vancomycini')
         intraabdom_non_cns.add(less_32_pca_less_14, less_32_pca_more_14, more_32_pca_less_14, more_32_pca_more_14,
-                               add_fluconazoli)
+                               add_fluconazoli, add_vancomycini)
         bot.send_message(callback.message.chat.id, text_to_choose_gw_in_mero, parse_mode='HTML',
                          reply_markup=intraabdom_non_cns)
+    # Бактериальный менингит.
     elif callback.data == 'bact_mening':
         bacterial_mening = types.InlineKeyboardMarkup(row_width=1)
         less_32_w_pca_less_14 = types.InlineKeyboardButton(text_less_32_w_pca_less_14, callback_data='40_8_meron')
         less_32_w_pca_more_14 = types.InlineKeyboardButton(text_less_32_w_pca_more_14, callback_data='40_8_meron')
         more_32_w_pca_no_matters = types.InlineKeyboardButton(text_more_32_w_pca_no_matters, callback_data='40_8_meron')
+        add_vancomycini = types.InlineKeyboardButton(text_bt_add_vancomycini,
+                                                     callback_data='add_vancomycini')
         add_fluconazoli = types.InlineKeyboardButton(text_add_fluconazoli, callback_data='add_fluconaz')
-        bacterial_mening.add(less_32_w_pca_less_14, less_32_w_pca_more_14, more_32_w_pca_no_matters, add_fluconazoli)
+        bacterial_mening.add(less_32_w_pca_less_14, less_32_w_pca_more_14, more_32_w_pca_no_matters, add_fluconazoli,
+                             add_vancomycini)
         bot.send_message(callback.message.chat.id, text_to_choose_gw_in_mero, parse_mode='HTML',
                          reply_markup=bacterial_mening)
+    # Варианты МЕРОНЕМА!
     elif callback.data == '13_8_meron':
         bot.register_next_step_handler(callback.message, meronemi_calculation_13)
         bot.send_message(callback.message.chat.id, text_f_meronemi_13_8, parse_mode='HTML')
@@ -337,6 +351,7 @@ def antibiotics_algorithm(callback):
         bot.register_next_step_handler(callback.message, meronemi_calculation_40)
         bot.send_message(callback.message.chat.id, text_f_meronemi_40_8, parse_mode='HTML')
         bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    # Добавить Флуконазол.
     elif callback.data == 'add_fluconaz':
         fluconazoli_g_w = types.InlineKeyboardMarkup(row_width=1)
         add_flucon_29_6_pca_less_14 = types.InlineKeyboardButton(text_add_flucon_29_6_less_14,
@@ -355,6 +370,7 @@ def antibiotics_algorithm(callback):
                             add_flucon_30_36_6_pca_more_14, add_flucon_37_more_pca, add_vancomycini)
         bot.send_message(callback.message.chat.id, text_to_choose_gw_in_mero, parse_mode='HTML',
                          reply_markup=fluconazoli_g_w)
+    # Варианты Флуконазола.
     elif callback.data == 'flucon_multi_72':
         bot.register_next_step_handler(callback.message, fluconazoli_calculation_40)
         bot.send_message(callback.message.chat.id, text_f_fluconazoli_72, parse_mode='HTML')
@@ -367,6 +383,7 @@ def antibiotics_algorithm(callback):
         bot.register_next_step_handler(callback.message, fluconazoli_calculation_40)
         bot.send_message(callback.message.chat.id, text_f_fluconazoli_24, parse_mode='HTML')
         bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    # Вилка на ВАНКО!!!
     elif callback.data == 'add_vancomycini':
         markup_vanco_add = types.InlineKeyboardMarkup(row_width=1)
         add_vanco_less_29_w_0_14 = types.InlineKeyboardButton(text_add_vanco_less_29_w_0_14,
@@ -391,6 +408,7 @@ def antibiotics_algorithm(callback):
         bot.send_message(callback.message.chat.id, text_before_vanco_forks, parse_mode='HTML')
         bot.send_message(callback.message.chat.id, text_for_pma_or_ser_creat, parse_mode='HTML',
                          reply_markup=markup_vanco_add)
+    # Вилка на ВАНКО по сроку гестации.
     elif callback.data == '29_0_14_vanco':
         markup_vanco_29_0_14 = types.InlineKeyboardMarkup(row_width=2)
         choice_10_mg = types.InlineKeyboardButton(text_choice_10_mg, callback_data='vanco_10_mg_18h')
@@ -441,23 +459,92 @@ def antibiotics_algorithm(callback):
                          reply_markup=markup_vanco_37_44_14_m)
     elif callback.data == '45_m_vanco':
         markup_vanco_45_m = types.InlineKeyboardMarkup(row_width=2)
-        choice_10_mg = types.InlineKeyboardButton(text_choice_10_mg, callback_data='vanco_10_mg_6')
-        choice_15_mg = types.InlineKeyboardButton(text_choice_15_mg, callback_data='vanco_15_mg_6')
+        choice_10_mg = types.InlineKeyboardButton(text_choice_10_mg, callback_data='vanco_10_mg_6h')
+        choice_15_mg = types.InlineKeyboardButton(text_choice_15_mg, callback_data='vanco_15_mg_6h')
         # choice_20_mg = types.InlineKeyboardButton(text_choice_20_mg, callback_data='vanco_20_mg_12h')
         markup_vanco_45_m.add(choice_10_mg, choice_15_mg)
         bot.send_message(callback.message.chat.id, text_choose_dose_vanco, parse_mode='HTML',
                          reply_markup=markup_vanco_45_m)
+    # Вилка на ВАНКО по креатинину.
     elif callback.data == 'creat_elevation_vanco':
         markup_vanco_creat_elevation = types.InlineKeyboardMarkup(row_width=1)
         creat_less_62 = types.InlineKeyboardButton(text_creat_less_62, callback_data='v_creat_less_62')
-        creat_62_80 = types.InlineKeyboardButton(text_creat_62_80, callback_data='v_creat_62_80')
+        creat_62_80 = types.InlineKeyboardButton(text_creat_62_80, callback_data='v_creat_62_88')
         creat_89_106 = types.InlineKeyboardButton(text_creat_89_106, callback_data='v_creat_89_106')
         creat_115_142 = types.InlineKeyboardButton(text_creat_115_142, callback_data='v_creat_115_142')
         creat_142_more = types.InlineKeyboardButton(text_creat_142_more, callback_data='v_creat_142_more')
         markup_vanco_creat_elevation.add(creat_less_62, creat_62_80, creat_89_106, creat_115_142, creat_142_more)
         bot.send_message(callback.message.chat.id, text_to_choose_creat_lvl, parse_mode='HTML',
                          reply_markup=markup_vanco_creat_elevation)
-
+    # Ванкомицин по ПМВ с учетом дозировки!
+    elif callback.data == 'vanco_10_mg_18h':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_10)
+        bot.send_message(callback.message.chat.id, text_f_vanco_18, parse_mode='HTML')
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'vanco_15_mg_18h':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_15)
+        bot.send_message(callback.message.chat.id, text_f_vanco_18, parse_mode='HTML')
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'vanco_10_mg_12h':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_10)
+        bot.send_message(callback.message.chat.id, text_f_vanco_12, parse_mode='HTML')
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'vanco_15_mg_12h':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_15)
+        bot.send_message(callback.message.chat.id, text_f_vanco_12, parse_mode='HTML')
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'vanco_10_mg_8h':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_10)
+        bot.send_message(callback.message.chat.id, text_f_vanco_8, parse_mode='HTML')
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'vanco_15_mg_8h':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_15)
+        bot.send_message(callback.message.chat.id, text_f_vanco_8, parse_mode='HTML')
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'vanco_10_mg_6h':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_10)
+        bot.send_message(callback.message.chat.id, text_f_vanco_6, parse_mode='HTML')
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'vanco_15_mg_6h':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_15)
+        bot.send_message(callback.message.chat.id, text_f_vanco_6, parse_mode='HTML')
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    # Ванкомицин по креатинину.
+    elif callback.data == 'v_creat_less_62':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_creat_less_62)
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'v_creat_62_88':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_creat_62_80)
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'v_creat_89_106':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_creat_89_106)
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'v_creat_115_142':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_creat_115_124)
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'v_creat_142_more':
+        bot.register_next_step_handler(callback.message, vancomycini_calculation_creat_142_more)
+        bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    # СЕПСИС ! ! ! ! ! ! !! ! ! ! ! ! ! !
+    elif callback.data == 'sepsis':
+        markup_sepsis_main = types.InlineKeyboardMarkup(row_width=1)
+        bt_clinic_less_24 = types.InlineKeyboardButton(text_bt_clinic_less_24_h, callback_data='less_24_h')
+        bt_clinic_more_24 = types.InlineKeyboardButton(text_bt_clinic_more_24_h, callback_data='more_24_h')
+        bt_clinic_more_24_bad_analis = types.InlineKeyboardButton(text_bt_clinic_more_24_h_and_bad_analis,
+                                                                  callback_data='more_24_h_bad')
+        markup_sepsis_main.add(bt_clinic_less_24, bt_clinic_more_24, bt_clinic_more_24_bad_analis)
+        bot.send_message(callback.message.chat.id, text_for_sepsis, parse_mode='HTML',
+                         reply_markup=markup_sepsis_main)
+    elif callback.data == 'less_24_h':
+        bot.send_message(callback.message.chat.id, text_to_abort_antibio_seps, parse_mode='HTML')
+    elif callback.data == 'more_24_h':
+        bot.send_message(callback.message.chat.id, text_to_estimate_lab_and_clin, parse_mode='HTML')
+    elif callback.data == 'more_24_h_bad':
+        markup_hard_sepsis = types.InlineKeyboardMarkup(row_width=1)
+        antibio_change = types.InlineKeyboardButton(text_bt_change_abt, callback_data='antibio_change')
+        markup_hard_sepsis.add(antibio_change)
+        bot.send_message(callback.message.chat.id, text_to_estimate_lab_and_clin_hard_seps, parse_mode='HTML',
+                         reply_markup=markup_hard_sepsis)
 
 
 # Постоянная работа бота.
