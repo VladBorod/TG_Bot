@@ -259,8 +259,10 @@ def antibiotics_algorithm(callback):
     # Симптомы есть, идем к смене АБТ.
     elif callback.data == 'deterioration_yes':
         markup_antibio_deterior_yes = types.InlineKeyboardMarkup(row_width=1)
+        go_to_prescribe_amikacini = types.InlineKeyboardButton(text_button_to_prescribe_amikacini,
+                                                               callback_data='prescribe_amikacini')
         antibio_change = types.InlineKeyboardButton(text_deterioraton_change, callback_data='antibio_change')
-        markup_antibio_deterior_yes.add(antibio_change)
+        markup_antibio_deterior_yes.add(go_to_prescribe_amikacini, antibio_change)
         bot.send_message(callback.message.chat.id, text_to_prolong_antibio, parse_mode='HTML',
                          reply_markup=markup_antibio_deterior_yes)
     # Назначаем МЕРОНЕМ!!!
@@ -365,6 +367,96 @@ def antibiotics_algorithm(callback):
         bot.register_next_step_handler(callback.message, fluconazoli_calculation_40)
         bot.send_message(callback.message.chat.id, text_f_fluconazoli_24, parse_mode='HTML')
         bot.send_message(callback.message.chat.id, text_for_weight_input, parse_mode='HTML')
+    elif callback.data == 'add_vancomycini':
+        markup_vanco_add = types.InlineKeyboardMarkup(row_width=1)
+        add_vanco_less_29_w_0_14 = types.InlineKeyboardButton(text_add_vanco_less_29_w_0_14,
+                                                              callback_data='29_0_14_vanco')
+        add_vanco_less_29_w_14_more = types.InlineKeyboardButton(text_add_vanco_less_29_w_14_more,
+                                                                 callback_data='29_14_m_vanco')
+        add_vanco_30_36_w_0_14 = types.InlineKeyboardButton(text_add_vanco_30_36_w_0_14,
+                                                            callback_data='30_36_14_vanco')
+        add_vanco_30_36_w_14_more = types.InlineKeyboardButton(text_add_vanco_30_36_w_14_more,
+                                                               callback_data='30_36_14_m_vanco')
+        add_vanco_37_44_w_0_7 = types.InlineKeyboardButton(text_add_vanco_37_44_w_0_7,
+                                                           callback_data='37_44_7_vanco')
+        add_vanco_37_44_w_7_more = types.InlineKeyboardButton(text_add_vanco_37_44_w_7_more,
+                                                              callback_data='37_44_7_m_vanco')
+        add_vanco_45_w_more = types.InlineKeyboardButton(text_add_vanco_45_w_more,
+                                                         callback_data='45_m_vanco')
+        add_vanco_creatinin_monitoring = types.InlineKeyboardButton(text_add_vanco_creatinin_monitoring,
+                                                                    callback_data='creat_elevation_vanco')
+        markup_vanco_add.add(add_vanco_less_29_w_0_14, add_vanco_less_29_w_14_more, add_vanco_30_36_w_0_14,
+                             add_vanco_30_36_w_14_more, add_vanco_37_44_w_0_7, add_vanco_37_44_w_7_more,
+                             add_vanco_45_w_more, add_vanco_creatinin_monitoring)
+        bot.send_message(callback.message.chat.id, text_before_vanco_forks, parse_mode='HTML')
+        bot.send_message(callback.message.chat.id, text_for_pma_or_ser_creat, parse_mode='HTML',
+                         reply_markup=markup_vanco_add)
+    elif callback.data == '29_0_14_vanco':
+        markup_vanco_29_0_14 = types.InlineKeyboardMarkup(row_width=2)
+        choice_10_mg = types.InlineKeyboardButton(text_choice_10_mg, callback_data='vanco_10_mg_18h')
+        choice_15_mg = types.InlineKeyboardButton(text_choice_15_mg, callback_data='vanco_15_mg_18h')
+        # choice_20_mg = types.InlineKeyboardButton(text_choice_20_mg, callback_data='vanco_20_mg_18h')
+        markup_vanco_29_0_14.add(choice_10_mg, choice_15_mg)
+        bot.send_message(callback.message.chat.id, text_choose_dose_vanco, parse_mode='HTML',
+                         reply_markup=markup_vanco_29_0_14)
+    elif callback.data == '29_14_m_vanco':
+        markup_vanco_29_14_m = types.InlineKeyboardMarkup(row_width=2)
+        choice_10_mg = types.InlineKeyboardButton(text_choice_10_mg, callback_data='vanco_10_mg_12h')
+        choice_15_mg = types.InlineKeyboardButton(text_choice_15_mg, callback_data='vanco_15_mg_12h')
+        # choice_20_mg = types.InlineKeyboardButton(text_choice_20_mg, callback_data='vanco_20_mg_12h')
+        markup_vanco_29_14_m.add(choice_10_mg, choice_15_mg)
+        bot.send_message(callback.message.chat.id, text_choose_dose_vanco, parse_mode='HTML',
+                         reply_markup=markup_vanco_29_14_m)
+    elif callback.data == '30_36_14_vanco':
+        markup_vanco_30_36_0_14 = types.InlineKeyboardMarkup(row_width=2)
+        choice_10_mg = types.InlineKeyboardButton(text_choice_10_mg, callback_data='vanco_10_mg_12h')
+        choice_15_mg = types.InlineKeyboardButton(text_choice_15_mg, callback_data='vanco_15_mg_12h')
+        # choice_20_mg = types.InlineKeyboardButton(text_choice_20_mg, callback_data='vanco_20_mg_12h')
+        markup_vanco_30_36_0_14.add(choice_10_mg, choice_15_mg)
+        bot.send_message(callback.message.chat.id, text_choose_dose_vanco, parse_mode='HTML',
+                         reply_markup=markup_vanco_30_36_0_14)
+    elif callback.data == '30_36_14_m_vanco':
+        markup_vanco_30_36_14_m = types.InlineKeyboardMarkup(row_width=2)
+        choice_10_mg = types.InlineKeyboardButton(text_choice_10_mg, callback_data='vanco_10_mg_8h')
+        choice_15_mg = types.InlineKeyboardButton(text_choice_15_mg, callback_data='vanco_15_mg_8h')
+        # choice_20_mg = types.InlineKeyboardButton(text_choice_20_mg, callback_data='vanco_20_mg_8h')
+        markup_vanco_30_36_14_m.add(choice_10_mg, choice_15_mg)
+        bot.send_message(callback.message.chat.id, text_choose_dose_vanco, parse_mode='HTML',
+                         reply_markup=markup_vanco_30_36_14_m)
+    elif callback.data == '37_44_7_vanco':
+        markup_vanco_37_44_0_14 = types.InlineKeyboardMarkup(row_width=2)
+        choice_10_mg = types.InlineKeyboardButton(text_choice_10_mg, callback_data='vanco_10_mg_12h')
+        choice_15_mg = types.InlineKeyboardButton(text_choice_15_mg, callback_data='vanco_15_mg_12h')
+        # choice_20_mg = types.InlineKeyboardButton(text_choice_20_mg, callback_data='vanco_20_mg_12h')
+        markup_vanco_37_44_0_14.add(choice_10_mg, choice_15_mg)
+        bot.send_message(callback.message.chat.id, text_choose_dose_vanco, parse_mode='HTML',
+                         reply_markup=markup_vanco_37_44_0_14)
+    elif callback.data == '37_44_7_m_vanco':
+        markup_vanco_37_44_14_m = types.InlineKeyboardMarkup(row_width=2)
+        choice_10_mg = types.InlineKeyboardButton(text_choice_10_mg, callback_data='vanco_10_mg_8h')
+        choice_15_mg = types.InlineKeyboardButton(text_choice_15_mg, callback_data='vanco_15_mg_8h')
+        # choice_20_mg = types.InlineKeyboardButton(text_choice_20_mg, callback_data='vanco_20_mg_8h')
+        markup_vanco_37_44_14_m.add(choice_10_mg, choice_15_mg)
+        bot.send_message(callback.message.chat.id, text_choose_dose_vanco, parse_mode='HTML',
+                         reply_markup=markup_vanco_37_44_14_m)
+    elif callback.data == '45_m_vanco':
+        markup_vanco_45_m = types.InlineKeyboardMarkup(row_width=2)
+        choice_10_mg = types.InlineKeyboardButton(text_choice_10_mg, callback_data='vanco_10_mg_6')
+        choice_15_mg = types.InlineKeyboardButton(text_choice_15_mg, callback_data='vanco_15_mg_6')
+        # choice_20_mg = types.InlineKeyboardButton(text_choice_20_mg, callback_data='vanco_20_mg_12h')
+        markup_vanco_45_m.add(choice_10_mg, choice_15_mg)
+        bot.send_message(callback.message.chat.id, text_choose_dose_vanco, parse_mode='HTML',
+                         reply_markup=markup_vanco_45_m)
+    elif callback.data == 'creat_elevation_vanco':
+        markup_vanco_creat_elevation = types.InlineKeyboardMarkup(row_width=1)
+        creat_less_62 = types.InlineKeyboardButton(text_creat_less_62, callback_data='v_creat_less_62')
+        creat_62_80 = types.InlineKeyboardButton(text_creat_62_80, callback_data='v_creat_62_80')
+        creat_89_106 = types.InlineKeyboardButton(text_creat_89_106, callback_data='v_creat_89_106')
+        creat_115_142 = types.InlineKeyboardButton(text_creat_115_142, callback_data='v_creat_115_142')
+        creat_142_more = types.InlineKeyboardButton(text_creat_142_more, callback_data='v_creat_142_more')
+        markup_vanco_creat_elevation.add(creat_less_62, creat_62_80, creat_89_106, creat_115_142, creat_142_more)
+        bot.send_message(callback.message.chat.id, text_to_choose_creat_lvl, parse_mode='HTML',
+                         reply_markup=markup_vanco_creat_elevation)
 
 
 

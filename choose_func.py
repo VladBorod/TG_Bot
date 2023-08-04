@@ -153,3 +153,57 @@ def fluconazoli_calculation_40(message):
         bot.send_message(message.chat.id, text_for_value_error, parse_mode='HTML')
         bot.register_next_step_handler(message, body_weight)
         return
+
+
+def vancomycini_calculation_10(message):
+    """Функция расчета Ванкомицина 10 мг"""
+    body_weight = 0.0
+    try:
+        body_weight = float(message.text.strip())
+        if body_weight <= 0.0:
+            bot.send_message(message.chat.id, text_for_body_weight_above_zero, parse_mode='HTML')
+            return
+        elif body_weight > 0.0:
+            result = body_weight * 10
+            bot.send_message(message.chat.id, f'<b><u>{round(result, 2)} мг</u></b>', parse_mode='HTML')
+            return
+    except ValueError:
+        bot.send_message(message.chat.id, text_for_value_error, parse_mode='HTML')
+        bot.register_next_step_handler(message, body_weight)
+        return
+
+
+def vancomycini_calculation_15(message):
+    """Функция расчета Ванкомицина 15 мг"""
+    body_weight = 0.0
+    try:
+        body_weight = float(message.text.strip())
+        if body_weight <= 0.0:
+            bot.send_message(message.chat.id, text_for_body_weight_above_zero, parse_mode='HTML')
+            return
+        elif body_weight > 0.0:
+            result = body_weight * 15
+            bot.send_message(message.chat.id, f'<b><u>{round(result, 2)} мг</u></b>', parse_mode='HTML')
+            return
+    except ValueError:
+        bot.send_message(message.chat.id, text_for_value_error, parse_mode='HTML')
+        bot.register_next_step_handler(message, body_weight)
+        return
+
+
+def vancomycini_calculation_20(message):
+    """Функция расчета Ванкомицина 20 мг"""
+    body_weight = 0.0
+    try:
+        body_weight = float(message.text.strip())
+        if body_weight <= 0.0:
+            bot.send_message(message.chat.id, text_for_body_weight_above_zero, parse_mode='HTML')
+            return
+        elif body_weight > 0.0:
+            result = body_weight * 20
+            bot.send_message(message.chat.id, f'<b><u>{round(result, 2)} мг</u></b>', parse_mode='HTML')
+            return
+    except ValueError:
+        bot.send_message(message.chat.id, text_for_value_error, parse_mode='HTML')
+        bot.register_next_step_handler(message, body_weight)
+        return
